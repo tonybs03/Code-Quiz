@@ -51,7 +51,7 @@ var quizbank = [
 
 var WINCOUNTER = 0
 var QUIZCOUNTER = 0
-timeLeft = 15;
+timeLeft = 30;
 
 
 // START BUTTON
