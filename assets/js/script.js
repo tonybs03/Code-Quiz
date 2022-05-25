@@ -10,18 +10,19 @@ var submitButton = document.getElementById("submit-button");
 var highscoreList = document.getElementById("high-score-list");
 var scorePage = document.getElementById("score-page");
 var restartButton = document.getElementById("restart-button");
+var clearButton = document.getElementById("clear-button");
 
 scorePage.style.display = "none";
 formsection.style.display = "none";
 
 var quizbank = [
 	{
-		question: "What is 10/2?",
+		question: "Inside which HTML element do we put the JavaScript?",
 		answers: {
-			a: '3',
-			b: '5',
-			c: '115',
-      d: '118'
+			a: '<js>',
+			b: '<script>',
+			c: '<scripting>',
+      d: '<javascript>'
 		},
 		correctAnswer: 'b'
 	},
@@ -87,25 +88,25 @@ function showquestion() {
   let btna = document.createElement("button");
   btna.id ='a';
   btna.classList.add('mp');
-  btna.innerHTML = quizbank[QUIZCOUNTER].answers.a;
+  btna.textContent = quizbank[QUIZCOUNTER].answers.a;
   answersection.appendChild(btna);
   
   let btnb = document.createElement("button");
   btnb.id ='b';
   btnb.classList.add('mp');
-  btnb.innerHTML = quizbank[QUIZCOUNTER].answers.b;
+  btnb.textContent = quizbank[QUIZCOUNTER].answers.b;
   answersection.appendChild(btnb);
   
   let btnc = document.createElement("button");
   btnc.id ='c';
   btnc.classList.add('mp');
-  btnc.innerHTML = quizbank[QUIZCOUNTER].answers.c;
+  btnc.textContent = quizbank[QUIZCOUNTER].answers.c;
   answersection.appendChild(btnc);
 
   let btnd = document.createElement("button");
   btnd.id ='d';
   btnd.classList.add('mp');
-  btnd.innerHTML = quizbank[QUIZCOUNTER].answers.d;
+  btnd.textContent = quizbank[QUIZCOUNTER].answers.d;
   answersection.appendChild(btnd);
 
   answerquestion();
@@ -178,16 +179,40 @@ submitButton.addEventListener("click", function(event) {
     players = storedPlayers;
   }
 
-  highscores.push(WINCOUNTER);
-  players.push(usernameinput.value);
-
-  localStorage.setItem("highscores", JSON.stringify(highscores));
-  localStorage.setItem("players", JSON.stringify(players));
   
-  formsection.style.display = "none";
-  renderHighscores()
-});
+  if (usernameinput.value == '') {
+    alert('PLEASE ENTER YOUR DAMN NAME')
+  } else {
+    highscores.push(WINCOUNTER);
+    players.push(usernameinput.value);
+    
+    const combinedlist = [];
+    for (var j = 0; j < players.length; j++) 
+        combinedlist.push({'player': players[j], 'score': highscores[j]});
+  
+    combinedlist.sort((a, b) => {
+      if (a.score < b.score)
+        return -1;
+      if (a.score > b.score)
+        return 1;
+      return 0;
+    });
+  
+    console.log(combinedlist)
+  
+    for (var k = 0; k < combinedlist.length; k++) {
+        players[k] = combinedlist[k].player;
+        highscores[k] = combinedlist[k].score;
+    }
+  
+    localStorage.setItem("highscores", JSON.stringify(highscores));
+    localStorage.setItem("players", JSON.stringify(players));
+    
+    formsection.style.display = "none";
+    renderHighscores()
+  }
 
+});
 
 
 function renderHighscores() {
@@ -208,7 +233,17 @@ function renderHighscores() {
   }
 }
 
+
 restartButton.addEventListener("click", function(event) {
   location.reload()
 });
 
+
+clearButton.addEventListener("click", function(event) {
+  highscoreList.innerHTML = "";
+  clearButton.style.display = "none";
+  var highscores = [];
+  var players = [];
+  localStorage.setItem("highscores", JSON.stringify(highscores));
+  localStorage.setItem("players", JSON.stringify(players));
+});
