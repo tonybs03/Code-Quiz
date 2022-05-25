@@ -28,23 +28,45 @@ var quizbank = [
 	},
 
 	{
-		question: "What is 30/3?",
+		question: "What is the correct syntax for referring to an external script called xxx.js?",
 		answers: {
-			a: '3',
-			b: '5',
-			c: '10',
-      d: '12'
+			a: '<script src="xxx.js">',
+			b: '<script name="xxx.js">',
+			c: '<script href="xxx.js">',
+      d: '<script id="xxx.js">'
 		},
-		correctAnswer: 'c'
+		correctAnswer: 'a'
+	},
+
+	{
+		question: "Which of the following is not a valid JavaScript variable name?",
+		answers: {
+			a: 'java_names',
+			b: '2java',
+			c: 'javaandjava',
+      d: 'none of the above'
+		},
+		correctAnswer: 'b'
+	},
+
+	{
+		question: "How do you write Hello World in an alert box?",
+		answers: {
+			a: 'msgBox("Hello World")',
+			b: 'alertBox("Hello World")',
+			c: 'msg("Hello World")',
+      d: 'alert("Hello World")'
+		},
+		correctAnswer: 'd'
 	},
 
   {
-		question: "What is 50/2?",
+		question: "Which attribute needs to be changed to make elements invisible?",
 		answers: {
-			a: '25',
-			b: '35',
-			c: '10',
-      d: '15'
+			a: 'visibility',
+			b: 'invisible',
+			c: 'invisibility',
+      d: 'visible'
 		},
 		correctAnswer: 'a'
 	}
@@ -128,10 +150,10 @@ function answerquestion() {
 
 	    if (event.target.id == quizbank[QUIZCOUNTER].correctAnswer) {
         WINCOUNTER += timeLeft;
-        resultsection.textContent = "CORRECT!";
+        resultsection.textContent = "CORRECT! YOU ARE ACING THIS EXTREMELY BASIC QUIZ!";
         setTimeout(function() {
           resultsection.textContent = "";
-        }, 1000);
+        }, 3000);
       } 
       
       if (event.target.id !== quizbank[QUIZCOUNTER].correctAnswer) {
@@ -139,7 +161,7 @@ function answerquestion() {
         resultsection.textContent = "WRONG YOU IDIOT! 15 LESS SECONDS NOW! HAHAHA!"
         setTimeout(function() {
           resultsection.textContent = "";
-        }, 1000);
+        }, 3000);
       } 
 
       if (QUIZCOUNTER < quizbank.length -+ 1) {
@@ -181,7 +203,7 @@ submitButton.addEventListener("click", function(event) {
 
   
   if (usernameinput.value == '') {
-    alert('PLEASE ENTER YOUR DAMN NAME')
+    alert('PLEASE ENTER YOUR NAME! YOU HAD ONE JOB!')
   } else {
     highscores.push(WINCOUNTER);
     players.push(usernameinput.value);
@@ -192,9 +214,9 @@ submitButton.addEventListener("click", function(event) {
   
     combinedlist.sort((a, b) => {
       if (a.score < b.score)
-        return -1;
-      if (a.score > b.score)
         return 1;
+      if (a.score > b.score)
+        return -1;
       return 0;
     });
   
@@ -226,7 +248,8 @@ function renderHighscores() {
     var score = highscores[i];
 
     var li = document.createElement("li");
-    li.textContent = "Player "+player+" has a score of "+score;
+    var rank = i+1
+    li.textContent = "#" + rank + ": Player "+player+" has a score of "+score;
     li.setAttribute("data-index", i);
 
     highscoreList.appendChild(li);
